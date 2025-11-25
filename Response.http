@@ -1,0 +1,47 @@
+### CRIAR USUÁRIO
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+    "username":"Lucas Macedo",
+    "email": "lucas.mcdolv@hotmail.com"
+
+}
+
+### CRIAR PRODUTO
+POST http://localhost:8080/products
+Content-Type: application/json
+Authorization: Basic user admin
+
+{
+    "name": "Camiseta",
+    "description": "Camiseta Lacoast tamanho M",
+    "price": 20.0
+}
+
+### 2. CRIAR PEDIDO
+POST http://localhost:8080/orders
+Content-Type: application/json
+
+{
+    "userId": 6,
+    "items": [
+        {
+            "productId": 3,
+            "quantity": 4
+        },
+        {
+            "productId": 1,
+            "quantity": 1
+        },
+        {
+            "productId": 7,
+            "quantity": 2
+        }
+    ]
+}
+
+### GET ORDENS
+
+GET http://localhost:8080/orders
+
