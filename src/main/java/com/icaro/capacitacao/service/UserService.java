@@ -8,6 +8,10 @@ import com.icaro.capacitacao.exception.UserNotFoundException;
 import com.icaro.capacitacao.mapper.UserMapper;
 import com.icaro.capacitacao.model.UserEntity;
 import com.icaro.capacitacao.repository.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,19 +19,26 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository repository;
     private final UserMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repository, UserMapper mapper) {
+    public UserService(UserRepository repository, UserMapper mapper, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.mapper = mapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public UserResponseDTO createUser(UserRequestDTO dto){
+        if(repository.findByUsername(dto.getUsername()).isPresent()){
+            throw new RuntimeException("Usuário já existe");
+        }
+
         UserEntity entity = mapper.toEntity(dto);
+        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
         UserEntity saved = repository.save(entity);
         return mapper.toDTO(saved);
     }
@@ -81,4 +92,9 @@ public class UserService {
         return mapper.toDTO(updatedEntity);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+    }
 }

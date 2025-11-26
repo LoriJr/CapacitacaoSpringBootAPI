@@ -11,6 +11,7 @@ import java.util.List;
 
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -22,6 +23,7 @@ public class UserEntity implements UserDetails {
     private Long id;
     private String username;
     private String email;
+    @Column(name = "password_user")
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
