@@ -19,4 +19,7 @@ public class UserRequestDTO {
     @NotBlank(message = "The email field is required.")
     @Email(message = "Invalid format email.")
     private String email;
+
+    @NotBlank(message = "The password field is required.")
+    private String password;
 }
