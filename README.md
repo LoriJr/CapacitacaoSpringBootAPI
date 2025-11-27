@@ -5,9 +5,10 @@ O objetivo do projeto é desenvolver uma aplicação utilizando o framework Spri
 notificações por e-mail, autenticação de usuários e persistência de dados em um banco de dados relacional.
 
 ## 🛠 Tecnologias Utilizadas
-* **Java 17**
+* **Java 21**
 * **Spring Boot 3**
 * **Spring Security** (PasswordEncoder)
+* **JWT** (geração de token)
 * **Spring Data JPA**
 * **PostgreSQL** (Produção) / **H2** (Testes)
 * **Lombok**
@@ -37,3 +38,4 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.generate-ddl=true
 spring.jpa.show-sql=true
+```
