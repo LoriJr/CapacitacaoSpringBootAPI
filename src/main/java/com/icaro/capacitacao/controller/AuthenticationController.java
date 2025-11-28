@@ -1,14 +1,15 @@
 package com.icaro.capacitacao.controller;
 
+import com.icaro.capacitacao.dto.login.TokenResponse;
 import com.icaro.capacitacao.dto.login.UserLogin;
 import com.icaro.capacitacao.model.UserEntity;
 import com.icaro.capacitacao.security.TokenService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.antlr.v4.runtime.Token;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,6 @@ public class AuthenticationController {
         var authentication = authenticationManager.authenticate(authenticationToken);
 
         var accessToken = tokenService.generateToken((UserEntity) authentication.getPrincipal());
-        return ResponseEntity.ok(accessToken);
+        return ResponseEntity.ok(new TokenResponse(accessToken));
     }
 }
