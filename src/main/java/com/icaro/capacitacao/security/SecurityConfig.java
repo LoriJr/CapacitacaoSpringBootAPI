@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @Configuration
@@ -21,7 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
 
-
+    private final FilterToken filterToken;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -36,11 +37,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable).sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authorizeHttpRequests(auth -> {
-            auth.requestMatchers(HttpMethod.POST, "/users").permitAll();
-            auth.requestMatchers(HttpMethod.POST, "/users").permitAll();
+            auth.requestMatchers(HttpMethod.POST, "/users").permitAll(); // cadastro de usuário
+            auth.requestMatchers(HttpMethod.POST, "/auth/login").permitAll(); // login
             auth.anyRequest().authenticated();
         })
-                .addFilterBefore()
+                .addFilterBefore(filterToken, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }
