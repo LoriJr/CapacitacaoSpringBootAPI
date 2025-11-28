@@ -22,6 +22,7 @@ public class SecurityConfig {
 
 
 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -36,9 +37,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable).sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authorizeHttpRequests(auth -> {
             auth.requestMatchers(HttpMethod.POST, "/users").permitAll();
+            auth.requestMatchers(HttpMethod.POST, "/users").permitAll();
             auth.anyRequest().authenticated();
         })
-                .httpBasic(Customizer.withDefaults())
+                .addFilterBefore()
                 .build();
     }
 }
